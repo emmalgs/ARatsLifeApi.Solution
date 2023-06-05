@@ -22,14 +22,19 @@ public class ChoicesController : ControllerBase
 
   // GET: api/Choices
   [HttpGet]
-  public async Task<ActionResult<IEnumerable<Choice>>> GetChoices()
+  public async Task<ActionResult<IEnumerable<Choice>>> GetChoices(int plotpointId)
   {
-    return await _context.Choices.ToListAsync();
+    IQueryable<Choice> query = _context.Choices.AsQueryable();
+    if (plotpointId != 0)
+    {
+      query = query.Where(entry => entry.PlotpointId == plotpointId);
+    }
+    return await query.ToListAsync();
   }
 
   // GET: api/Choices/4
-  [HttpGet("{id}")]
-  public async Task<ActionResult<Choice>> GetChoices(int id)
+  [HttpGet("{id}"), ActionName("GetChoices")]
+  public async Task<ActionResult<Choice>> GetThisChoice(int id)
   {
     var choice = await _context.Choices.FindAsync(id);
 
@@ -80,7 +85,7 @@ public class ChoicesController : ControllerBase
     _context.Choices.Add(choice);
     await _context.SaveChangesAsync();
 
-    return CreatedAtAction("GetChoice", new { id = choice.ChoiceId }, choice);
+    return CreatedAtAction("GetChoices", new { id = choice.ChoiceId }, choice);
   }
 
   // DELETE: api/Choices/5
