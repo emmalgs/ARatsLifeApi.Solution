@@ -2,6 +2,7 @@
 using ARatsLifeApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ARatsLifeApi.Migrations
 {
     [DbContext(typeof(ARatsLifeApiContext))]
-    partial class ARatsLifeApiContextModelSnapshot : ModelSnapshot
+    [Migration("20230605225019_AddHeatAndHeatLevel")]
+    partial class AddHeatAndHeatLevel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +45,7 @@ namespace ARatsLifeApi.Migrations
                         {
                             ChoiceId = 1,
                             Description = "Aa",
-                            HeatLevel = 30,
+                            HeatLevel = 0,
                             PlotpointId = 1
                         },
                         new
@@ -57,14 +59,14 @@ namespace ARatsLifeApi.Migrations
                         {
                             ChoiceId = 3,
                             Description = "Ba",
-                            HeatLevel = 10,
+                            HeatLevel = 0,
                             PlotpointId = 2
                         },
                         new
                         {
                             ChoiceId = 4,
                             Description = "Bb",
-                            HeatLevel = 25,
+                            HeatLevel = 0,
                             PlotpointId = 2
                         },
                         new
@@ -78,7 +80,7 @@ namespace ARatsLifeApi.Migrations
                         {
                             ChoiceId = 6,
                             Description = "Cb",
-                            HeatLevel = 35,
+                            HeatLevel = 0,
                             PlotpointId = 3
                         });
                 });
@@ -119,78 +121,6 @@ namespace ARatsLifeApi.Migrations
                     b.HasKey("ItemId");
 
                     b.ToTable("Items");
-
-                    b.HasData(
-                        new
-                        {
-                            ItemId = 1,
-                            InventoryId = 1,
-                            Name = "Gucci Belt",
-                            Value = 25
-                        },
-                        new
-                        {
-                            ItemId = 2,
-                            InventoryId = 2,
-                            Name = "Balenciaga Sunglasses",
-                            Value = 35
-                        },
-                        new
-                        {
-                            ItemId = 3,
-                            InventoryId = 3,
-                            Name = "Louis Vuitton Necktie",
-                            Value = 15
-                        },
-                        new
-                        {
-                            ItemId = 4,
-                            InventoryId = 4,
-                            Name = "Hermez Birken Bag",
-                            Value = 50
-                        },
-                        new
-                        {
-                            ItemId = 5,
-                            InventoryId = 5,
-                            Name = "Rolex Wristwatch",
-                            Value = 40
-                        },
-                        new
-                        {
-                            ItemId = 6,
-                            InventoryId = 6,
-                            Name = "White Stilton Gold Cheese",
-                            Value = 50
-                        },
-                        new
-                        {
-                            ItemId = 7,
-                            InventoryId = 7,
-                            Name = "$200, Straight Up",
-                            Value = 15
-                        },
-                        new
-                        {
-                            ItemId = 8,
-                            InventoryId = 8,
-                            Name = "Silver Tiffany Tennis Bracelet",
-                            Value = 20
-                        },
-                        new
-                        {
-                            ItemId = 9,
-                            InventoryId = 9,
-                            Name = "Gucci Slides (Whatever those are)",
-                            Value = 10
-                        },
-                        new
-                        {
-                            ItemId = 10,
-                            InventoryId = 10,
-                            Name = "Versace Platform Heels",
-                            Value = 30
-                        });
                 });
 
             modelBuilder.Entity("ARatsLifeApi.Models.Plotpoint", b =>
