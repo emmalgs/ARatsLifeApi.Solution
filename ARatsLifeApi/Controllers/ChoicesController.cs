@@ -28,7 +28,7 @@ public class ChoicesController : ControllerBase
   }
 
   // GET: api/Choices/4
-  [HttpGet("{id")]
+  [HttpGet("{id}")]
   public async Task<ActionResult<Choice>> GetChoices(int id)
   {
     var choice = await _context.Choices.FindAsync(id);
@@ -43,7 +43,7 @@ public class ChoicesController : ControllerBase
 
   // PUT: api/Plotpoints/5
   // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-  [HttpPut("{id")]
+  [HttpPut("{id}")]
   public async Task<IActionResult> PutChoice(int id, Choice choice)
   {
     if (id != choice.ChoiceId)
@@ -84,7 +84,7 @@ public class ChoicesController : ControllerBase
   }
 
   // DELETE: api/Choices/5
-  [HttpDelete("{id")]
+  [HttpDelete("{id}")]
   public async Task<IActionResult> DeleteChoice(int id)
   {
     var choice = await _context.Choices.FindAsync(id);
