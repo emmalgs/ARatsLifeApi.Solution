@@ -33,9 +33,45 @@ namespace ARatsLifeApi.Migrations
 
                     b.HasKey("ChoiceId");
 
-                    b.HasIndex("PlotpointId");
-
                     b.ToTable("Choices");
+
+                    b.HasData(
+                        new
+                        {
+                            ChoiceId = 1,
+                            Description = "Aa",
+                            PlotpointId = 1
+                        },
+                        new
+                        {
+                            ChoiceId = 2,
+                            Description = "Ab",
+                            PlotpointId = 1
+                        },
+                        new
+                        {
+                            ChoiceId = 3,
+                            Description = "Ba",
+                            PlotpointId = 2
+                        },
+                        new
+                        {
+                            ChoiceId = 4,
+                            Description = "Bb",
+                            PlotpointId = 2
+                        },
+                        new
+                        {
+                            ChoiceId = 5,
+                            Description = "Ca",
+                            PlotpointId = 3
+                        },
+                        new
+                        {
+                            ChoiceId = 6,
+                            Description = "Cb",
+                            PlotpointId = 3
+                        });
                 });
 
             modelBuilder.Entity("ARatsLifeApi.Models.Item", b =>
@@ -73,17 +109,43 @@ namespace ARatsLifeApi.Migrations
                     b.HasKey("PlotpointId");
 
                     b.ToTable("Plotpoints");
-                });
 
-            modelBuilder.Entity("ARatsLifeApi.Models.Choice", b =>
-                {
-                    b.HasOne("ARatsLifeApi.Models.Plotpoint", "Plotpoint")
-                        .WithMany()
-                        .HasForeignKey("PlotpointId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Plotpoint");
+                    b.HasData(
+                        new
+                        {
+                            PlotpointId = 1,
+                            Description = "plotpoint A",
+                            StoryPosition = 1,
+                            Title = "A"
+                        },
+                        new
+                        {
+                            PlotpointId = 2,
+                            Description = "plotpoint B",
+                            StoryPosition = 2,
+                            Title = "B"
+                        },
+                        new
+                        {
+                            PlotpointId = 3,
+                            Description = "plotpoint C",
+                            StoryPosition = 3,
+                            Title = "C"
+                        },
+                        new
+                        {
+                            PlotpointId = 4,
+                            Description = "plotpoint D",
+                            StoryPosition = 4,
+                            Title = "D"
+                        },
+                        new
+                        {
+                            PlotpointId = 5,
+                            Description = "plotpoint E",
+                            StoryPosition = 5,
+                            Title = "E"
+                        });
                 });
 #pragma warning restore 612, 618
         }
