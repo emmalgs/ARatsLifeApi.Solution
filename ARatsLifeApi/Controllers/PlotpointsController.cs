@@ -29,16 +29,20 @@ public class PlotpointsController : ControllerBase
 
   // GET: api/Plotpoints/5
   [HttpGet("{id}")]
-  public async Task<ActionResult<Plotpoint>> GetPlotpoint(int id)
+  public async Task<ActionResult<Dictionary<string, object>>> GetPlotpoint(int id)
   {
+    var scene = new Dictionary<string, object> () {};
     var plotpoint = await _context.Plotpoints.FindAsync(id);
+    var choices = await _context.Choices.Where(c => c.PlotpointId == id).ToListAsync();
+    scene.Add("plotpoint", plotpoint);
+    scene.Add("choices", choices);
 
     if (plotpoint == null)
     {
       return NotFound();
     }
 
-    return plotpoint;
+    return scene;
   }
 
   // PUT: api/Plotpoints/5
@@ -103,4 +107,10 @@ public class PlotpointsController : ControllerBase
   {
     return _context.Plotpoints.Any(e => e.PlotpointId == id);
   }
+
 }
+
+// public class DatabaseInfo
+// {
+//   public IEnumerable<T> Plotpoint { get; set; }
+// }
