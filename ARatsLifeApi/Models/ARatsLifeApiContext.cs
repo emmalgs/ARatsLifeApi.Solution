@@ -7,6 +7,7 @@ public class ARatsLifeApiContext : DbContext
   public DbSet<Choice> Choices { get; set; }
   public DbSet<Item> Items { get; set; }
   public DbSet<Plotpoint> Plotpoints { get; set; }
+  public DbSet<Inventory> Inventories { get; set; }
   public ARatsLifeApiContext(DbContextOptions options) : base(options) { }
 
   protected override void OnModelCreating(ModelBuilder builder)
