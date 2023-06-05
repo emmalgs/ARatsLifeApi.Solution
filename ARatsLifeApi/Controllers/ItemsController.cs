@@ -80,7 +80,7 @@ namespace ARatsLifeApi.Controllers
       _context.Items.Add(item);
       await _context.SaveChangesAsync();
 
-      return CreatedAtAction("GetItem", new { id = item.ItemId }, item);
+      return CreatedAtAction("GetItems", new { id = item.ItemId }, item);
     }
 
     // DELETE: api/Items/5
