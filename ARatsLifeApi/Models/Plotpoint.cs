@@ -10,4 +10,5 @@ public class Plotpoint
   [Required(ErrorMessage = "The plotpoint needs a description!")]
   public string Description { get; set; }
   public int StoryPosition { get; set; }
+  public List<Choice> Choices { get; set; }
 }
