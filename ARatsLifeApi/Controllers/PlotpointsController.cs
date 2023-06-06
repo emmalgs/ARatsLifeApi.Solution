@@ -6,11 +6,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ARatsLifeApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ARatsLifeApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class PlotpointsController : ControllerBase
 {
   private readonly ARatsLifeApiContext _context;
