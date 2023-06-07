@@ -14,33 +14,33 @@ namespace ARatsLifeApi.Controllers
         {
             _context = context;
         }
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Inventory>>> GetInventories()
-        {
-            return await _context.Inventories.ToListAsync();
-        }
+        // [HttpGet]
+        // public async Task<ActionResult<IEnumerable<Inventory>>> GetInventories()
+        // {
+        //     return await _context.Inventories.ToListAsync();
+        // }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Inventory>> GetInventory(int id)
-        {
-            var rat = await _context.Inventories.FindAsync(id);
+        // [HttpGet("{id}")]
+        // public async Task<ActionResult<Inventory>> GetInventory(int id)
+        // {
+        //     var rat = await _context.Inventories.FindAsync(id);
 
-            if (rat == null)
-            {
-                return NotFound();
-            }
+        //     if (rat == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            return rat;
-        }
+        //     return rat;
+        // }
 
-        [HttpPost]
-        public async Task<ActionResult<Inventory>> PostInventory(Inventory inventory)
-        {
-            _context.Inventories.Add(inventory);
-            await _context.SaveChangesAsync();
+        // [HttpPost]
+        // public async Task<ActionResult<Inventory>> PostInventory(Inventory inventory)
+        // {
+        //     _context.Inventories.Add(inventory);
+        //     await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetInventory", new { id = inventory.InventoryId }, inventory);
-        }
+        //     return CreatedAtAction("GetInventory", new { id = inventory.InventoryId }, inventory);
+        // }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, Inventory inventory)

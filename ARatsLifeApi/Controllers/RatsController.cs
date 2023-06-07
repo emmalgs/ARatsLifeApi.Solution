@@ -92,11 +92,12 @@ namespace ARatsLifeApi.Controllers
     }
 
     // GET Journey
-    [HttpGet("/{id}/journey")]
-    public async Task<ActionResult<Journey>> GetJourney(int id)
+    [HttpGet("{id}/journey")]
+    public async Task<ActionResult<IEnumerable<Journey>>> GetJourney(int id)
     {
       return await _context.Journies
-                                  .FirstOrDefaultAsync(e => e.RatId == id);
+                                  .Where(e => e.RatId == id)
+                                  .ToListAsync();
     }
 
     [HttpPost("{id}/journey")]
@@ -110,6 +111,23 @@ namespace ARatsLifeApi.Controllers
     private bool RatExists(int id)
     {
       return _context.Rats.Any(e => e.RatId == id);
+    }
+
+    [HttpGet("{id}/inventories")]
+    public async Task<ActionResult<IEnumerable<Inventory>>> GetInventory(int id)
+    {
+        return await _context.Inventories
+                            .Where(e => e.RatId == id)
+                            .ToListAsync();
+    } 
+
+    [HttpPost("{id}/inventories")]
+    public async Task<ActionResult<Inventory>> PostInventory(Inventory inventory)
+    {
+        _context.Inventories.Add(inventory);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction("GetRat", new { id = inventory.InventoryId }, inventory);
     }
   }
 }
