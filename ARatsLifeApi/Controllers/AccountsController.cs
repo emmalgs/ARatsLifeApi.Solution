@@ -25,6 +25,10 @@ public class AccountsController : ControllerBase
     _context = context;
   }
 
+  [HttpPost]
+  public async Task<Action
+
+
   // GET: api/Accounts
   [HttpGet]
   public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetUsers()
