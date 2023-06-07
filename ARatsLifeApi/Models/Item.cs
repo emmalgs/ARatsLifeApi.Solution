@@ -7,5 +7,5 @@ public class Item
   [Required(ErrorMessage = "The item needs a name!")]
   public string Name { get; set; }
   public int Value { get; set; }
-  public int InventoryId { get; set; }
+  public List<Inventory> RatInventory { get; set; }
 }

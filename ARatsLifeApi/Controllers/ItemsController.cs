@@ -24,7 +24,9 @@ namespace ARatsLifeApi.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Item>>> GetItems()
     {
-      return await _context.Items.ToListAsync();
+      return await _context.Items
+                            .Include(i => i.RatInventory)
+                            .ToListAsync();
     }
 
     // GET: api/Items/5

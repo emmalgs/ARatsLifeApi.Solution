@@ -1,18 +1,12 @@
-// using System;
-// using System.Collections.Generic;
-// using System.Linq;
-// using System.Threading.Tasks;
-// using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ARatsLifeApi.Models;
-using Microsoft.AspNetCore.Authorization;
+
 
 namespace ARatsLifeApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-// [Authorize]
 public class PlotpointsController : ControllerBase
 {
   private readonly ARatsLifeApiContext _context;
@@ -22,7 +16,6 @@ public class PlotpointsController : ControllerBase
     _context = context;
   }
 
-  // GET: api/Plotpoints
   [HttpGet]
   public async Task<ActionResult<IEnumerable<Plotpoint>>> GetPlotpoints()
   {
@@ -31,7 +24,6 @@ public class PlotpointsController : ControllerBase
                                   .ToListAsync();
   }
 
-  // GET: api/Plotpoints/5
   [HttpGet("{id}")]
   public async Task<ActionResult<Plotpoint>> GetPlotpoint(int id)
   {
@@ -47,8 +39,6 @@ public class PlotpointsController : ControllerBase
     return plotpoint;
   }
 
-  // PUT: api/Plotpoints/5
-  // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
   [HttpPut("{id}")]
   public async Task<IActionResult> PutPlotpoint(int id, Plotpoint plotpoint)
   {
@@ -78,8 +68,6 @@ public class PlotpointsController : ControllerBase
     return NoContent();
   }
 
-  // POST: api/Plotpoints
-  // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
   [HttpPost]
   public async Task<ActionResult<Plotpoint>> PostPlotpoint(Plotpoint plotpoint)
   {
@@ -89,7 +77,6 @@ public class PlotpointsController : ControllerBase
     return CreatedAtAction("GetPlotpoint", new { id = plotpoint.PlotpointId }, plotpoint);
   }
 
-  // DELETE: api/Plotpoints/5
   [HttpDelete("{id}")]
   public async Task<IActionResult> DeletePlotpoint(int id)
   {
@@ -105,14 +92,10 @@ public class PlotpointsController : ControllerBase
     return NoContent();
   }
 
+  
   private bool PlotpointExists(int id)
   {
     return _context.Plotpoints.Any(e => e.PlotpointId == id);
   }
 
 }
-
-// public class DatabaseInfo
-// {
-//   public IEnumerable<T> Plotpoint { get; set; }
-// }

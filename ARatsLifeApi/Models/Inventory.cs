@@ -1,5 +1,4 @@
 namespace ARatsLifeApi.Models;
-
 public class Inventory
 {
   public int InventoryId { get; set; }

@@ -3,6 +3,7 @@ using System;
 using ARatsLifeApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ARatsLifeApi.Migrations
 {
     [DbContext(typeof(ARatsLifeApiContext))]
-    partial class ARatsLifeApiContextModelSnapshot : ModelSnapshot
+    [Migration("20230607211149_UpdateRatJourneyField")]
+    partial class UpdateRatJourneyField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

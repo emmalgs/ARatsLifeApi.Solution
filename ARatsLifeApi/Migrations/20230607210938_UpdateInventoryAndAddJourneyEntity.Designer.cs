@@ -3,6 +3,7 @@ using System;
 using ARatsLifeApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ARatsLifeApi.Migrations
 {
     [DbContext(typeof(ARatsLifeApiContext))]
-    partial class ARatsLifeApiContextModelSnapshot : ModelSnapshot
+    [Migration("20230607210938_UpdateInventoryAndAddJourneyEntity")]
+    partial class UpdateInventoryAndAddJourneyEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,8 +270,6 @@ namespace ARatsLifeApi.Migrations
 
                     b.HasKey("JourneyId");
 
-                    b.HasIndex("RatId");
-
                     b.ToTable("Journies");
                 });
 
@@ -283,6 +283,9 @@ namespace ARatsLifeApi.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("RatId")
+                        .HasColumnType("int");
+
                     b.Property<int>("StoryPosition")
                         .HasColumnType("int");
 
@@ -291,6 +294,8 @@ namespace ARatsLifeApi.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("PlotpointId");
+
+                    b.HasIndex("RatId");
 
                     b.ToTable("Plotpoints");
 
@@ -509,13 +514,11 @@ namespace ARatsLifeApi.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ARatsLifeApi.Models.Journey", b =>
+            modelBuilder.Entity("ARatsLifeApi.Models.Plotpoint", b =>
                 {
                     b.HasOne("ARatsLifeApi.Models.Rat", null)
-                        .WithMany("Journey")
-                        .HasForeignKey("RatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Plotpoints")
+                        .HasForeignKey("RatId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -583,7 +586,7 @@ namespace ARatsLifeApi.Migrations
                 {
                     b.Navigation("ItemInventory");
 
-                    b.Navigation("Journey");
+                    b.Navigation("Plotpoints");
                 });
 #pragma warning restore 612, 618
         }

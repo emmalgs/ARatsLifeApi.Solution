@@ -8,5 +8,6 @@ public class Rat
   public string Name { get; set; }
   [Range(0, Int16.MaxValue, ErrorMessage = "The field {0} must be a non-negative integer")]
   public int Heat { get; set; }
-  public int InventoryId { get; set; }
+  public List<Inventory> ItemInventory { get; set; }
+  public List<Journey> Journey { get; set; }
 }
