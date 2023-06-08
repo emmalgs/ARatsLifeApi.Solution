@@ -7,6 +7,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ARatsLifeApi.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using ARatsLifeApi.DTO;
+using System.Web;
 
 namespace ARatsLifeApi.Controllers;
 
@@ -25,105 +45,75 @@ public class AccountsController : ControllerBase
     _context = context;
   }
 
+  // [HttpGet("{id}")]
+  // public async Task<ActionResult<ApplicationUser>> GetUser(int id)
+  // {
+  //   var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+  // }
+
   [HttpPost]
-  public async Task<Action
-
-
-  // GET: api/Accounts
-  [HttpGet]
-  public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetUsers()
+  public async Task<ActionResult> RegisterAsync(DTORegisteredUser newUser)
   {
-    return await _context.Users.ToListAsync();
+    var user = new ApplicationUser { UserName = newUser.Email};
+    var result = await _userManager.CreateAsync(user, newUser.Password);
+
+    if (result.Succeeded)
+    {
+      // TODO add identityOptions.User.RequireUniqueEmail
+      var someUser = await _userManager.FindByEmailAsync(newUser.Email);
+      var token = await _userManager.GenerateUserTokenAsync(someUser, "Invitation", "Hummus");
+      var isVerified = await _userManager.VerifyUserTokenAsync(someUser, "Invitation", "Hummus", token);
+
+      return NoContent();
+    }
+      var errors = result.Errors.Select(e => e.Description);
+      var bigErrorString = String.Join(" ", errors);
+
+      return BadRequest(bigErrorString);
   }
 
-  // GET: api/Accounts/5
-  [HttpGet("{id}")]
-  public async Task<ActionResult<ApplicationUser>> GetApplicationUser(string id)
-  {
-    var applicationUser = await _context.Users.FindAsync(id);
+  // [HttpPost]
+  // public async Task<IActionResult> Login(string[] userInfo)
+  // {
+  //   Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(userInfo[0], userInfo[1], isPersistent: true, lockoutOnFailure: false);
+  //   if (result.Succeeded)
+  //   {
+  //     var accessToken = GenerateJSONWebToken(userInfo[0]);
+  //     SetJWTCookie(accessToken);
+  //     return NoContent();
+  //   }
+  //   else
+  //   {
+  //     return BadRequest();
+  //   }
+  // }
 
-    if (applicationUser == null)
-    {
-      return NotFound();
-    }
+  // private string GenerateJSONWebToken(string userEmail)
+  // {
+  //   var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MynameisJamesBond007"));
+  //   var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+  //   var emailClaim = new Claim("email", userEmail);
+  //   var claims = new List<Claim> { emailClaim };
 
-    return applicationUser;
-  }
+  //   var token = new JwtSecurityToken(
+  //       issuer: "http://localhost:5102",
+  //       audience: "http://localhost:5257",
+  //       expires: DateTime.Now.AddHours(3),
+  //       signingCredentials: credentials,
+  //       claims: claims
+  //       );
 
-  // PUT: api/Accounts/5
-  // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-  [HttpPut("{id}")]
-  public async Task<IActionResult> PutApplicationUser(string id, ApplicationUser applicationUser)
-  {
-    if (id != applicationUser.Id)
-    {
-      return BadRequest();
-    }
+  //   return new JwtSecurityTokenHandler().WriteToken(token);
+  // }
 
-    _context.Entry(applicationUser).State = EntityState.Modified;
-
-    try
-    {
-      await _context.SaveChangesAsync();
-    }
-    catch (DbUpdateConcurrencyException)
-    {
-      if (!ApplicationUserExists(id))
-      {
-        return NotFound();
-      }
-      else
-      {
-        throw;
-      }
-    }
-
-    return NoContent();
-  }
-
-  // POST: api/Accounts
-  // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-  [HttpPost]
-  public async Task<ActionResult<ApplicationUser>> PostApplicationUser(ApplicationUser applicationUser)
-  {
-    _context.Users.Add(applicationUser);
-    try
-    {
-      await _context.SaveChangesAsync();
-    }
-    catch (DbUpdateException)
-    {
-      if (ApplicationUserExists(applicationUser.Id))
-      {
-        return Conflict();
-      }
-      else
-      {
-        throw;
-      }
-    }
-
-    return CreatedAtAction("GetApplicationUser", new { id = applicationUser.Id }, applicationUser);
-  }
-
-  // DELETE: api/Accounts/5
-  [HttpDelete("{id}")]
-  public async Task<IActionResult> DeleteApplicationUser(string id)
-  {
-    var applicationUser = await _context.Users.FindAsync(id);
-    if (applicationUser == null)
-    {
-      return NotFound();
-    }
-
-    _context.Users.Remove(applicationUser);
-    await _context.SaveChangesAsync();
-
-    return NoContent();
-  }
-
-  private bool ApplicationUserExists(string id)
-  {
-    return _context.Users.Any(e => e.Id == id);
-  }
+  // private void SetJWTCookie(string token)
+  // {
+  //   var cookieOptions = new CookieOptions
+  //   {
+  //     HttpOnly = true,
+  //     Expires = DateTime.UtcNow.AddHours(3),
+  //   };
+  //   Response.Cookies.Append("jwtCookie", token, cookieOptions);
+  // }
 }
