@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -25,6 +26,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ARatsLifeApi.DTO;
+using System.Web;
 
 namespace ARatsLifeApi.Controllers;
 
@@ -51,19 +53,24 @@ public class AccountsController : ControllerBase
   // }
 
   [HttpPost]
-  public async Task<ActionResult<ApplicationUser>> Register(DTORegisteredUser newUser)
+  public async Task<ActionResult> RegisterAsync(DTORegisteredUser newUser)
   {
     var user = new ApplicationUser { UserName = newUser.Email};
     var result = await _userManager.CreateAsync(user, newUser.Password);
 
     if (result.Succeeded)
     {
+      // TODO add identityOptions.User.RequireUniqueEmail
+      var someUser = await _userManager.FindByEmailAsync(newUser.Email);
+      var token = await _userManager.GenerateUserTokenAsync(someUser, "Invitation", "Hummus");
+      var isVerified = await _userManager.VerifyUserTokenAsync(someUser, "Invitation", "Hummus", token);
+
       return NoContent();
     }
-    else
-    {
-      return BadRequest();
-    }
+      var errors = result.Errors.Select(e => e.Description);
+      var bigErrorString = String.Join(" ", errors);
+
+      return BadRequest(bigErrorString);
   }
 
   // [HttpPost]
