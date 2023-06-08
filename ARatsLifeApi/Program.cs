@@ -27,8 +27,9 @@ builder.Services.AddDbContext<ARatsLifeApiContext>(
                 );
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-          .AddEntityFrameworkStores<ARatsLifeApiContext>();
-          // .AddDefaultTokenProviders();
+          .AddEntityFrameworkStores<ARatsLifeApiContext>()
+          .AddDefaultTokenProviders()
+          .AddTokenProvider<InvitationTokenProvider<ApplicationUser>>("Invitation");
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
