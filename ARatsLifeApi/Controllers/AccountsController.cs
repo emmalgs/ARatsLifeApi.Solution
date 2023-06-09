@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ARatsLifeApi.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -52,8 +53,10 @@ public class AccountsController : ControllerBase
 
   // }
 
+
+  // POST: api/accounts
   [HttpPost]
-  public async Task<ActionResult> RegisterAsync(DTORegisteredUser newUser)
+  public async Task<ActionResult<DTOGoodAccount>> RegisterAsync(DTORegisteredUser newUser)
   {
     var user = new ApplicationUser { UserName = newUser.Email};
     var result = await _userManager.CreateAsync(user, newUser.Password);
@@ -61,11 +64,27 @@ public class AccountsController : ControllerBase
     if (result.Succeeded)
     {
       // TODO add identityOptions.User.RequireUniqueEmail
-      var someUser = await _userManager.FindByEmailAsync(newUser.Email);
+      var someUser = await _userManager.FindByNameAsync(newUser.Email);
       var token = await _userManager.GenerateUserTokenAsync(someUser, "Invitation", "Hummus");
       var isVerified = await _userManager.VerifyUserTokenAsync(someUser, "Invitation", "Hummus", token);
 
-      return NoContent();
+      var userConfirmed = new DTOGoodAccount 
+      {
+        Token = token,
+        UserName = newUser.Email,
+      };
+      var header = "application/json";
+      var json = System.Text.Json.JsonSerializer.Serialize(userConfirmed);
+      Response.StatusCode = (int) HttpStatusCode.Accepted;
+
+      // var domain = Request.Host.ToString();
+      // var cookie = new Cookie("acceptMyDAMNCookie", token);
+      // var cookieContainer = new CookieContainer();
+      // cookieContainer.Add(new Uri($"http://{domain}"), cookie);
+      Response.Cookies.Append("TokenCookie", token);
+      
+
+      return Content(json, header);
     }
       var errors = result.Errors.Select(e => e.Description);
       var bigErrorString = String.Join(" ", errors);
