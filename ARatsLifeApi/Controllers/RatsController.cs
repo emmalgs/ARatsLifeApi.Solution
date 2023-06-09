@@ -22,7 +22,7 @@ namespace ARatsLifeApi.Controllers
 
     // GET: api/Rats
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Rat>>> GetRats()
+    public async Task<ActionResult<IEnumerable<Rat>>> GetRatsAsync()
     {
       return await _context.Rats.ToListAsync();
     }
